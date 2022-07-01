@@ -20,7 +20,7 @@ namespace SetCalculator.Sets
             foreach (T el in elements) 
                 _elements.Add(el);
 
-            ClearFromDublictates();
+            ClearFromDublicates();
         }
         
         public T this[int index]
@@ -40,7 +40,7 @@ namespace SetCalculator.Sets
 
                 _elements[index] = value;
 
-                ClearFromDublictates();
+                ClearFromDublicates();
 
                 return;
             }
@@ -51,14 +51,12 @@ namespace SetCalculator.Sets
             return index >= 0 && index < _elements.Count;
         }
 
-        private void ClearFromDublictates()
+        private void ClearFromDublicates()
         {
             for (int i = 0; i < _elements.Count; ++i)
-            {
                 for (int j = _elements.Count - 1; j > i; --j)
                     if (_elements[i].Equals(_elements[j])) 
                         _elements.RemoveAt(j);
-            }
         }
 
         // Добавление элемента в конец
@@ -113,8 +111,40 @@ namespace SetCalculator.Sets
         public static Set<T> operator /(Set<T> s1, Set<T> s2)
         {
             Set<T> result = new Set<T>('/');
+            var query = from val1 in s1
+                        where !s2.Contains(val1)
+                        select val1;
 
+            foreach (T value in query) 
+                result.Add(value);
 
+            return result;
+        }
+
+        // Оператор симметрической разности
+        public static Set<T> operator ^(Set<T> s1, Set<T> s2)
+        {
+            Set<T> result = new Set<T>('^');
+            var query = from val1 in 
+                            (
+                                from val1 in s1
+                                where !s2.Contains(val1)
+                                select val1
+                            )
+                        from val2 in
+                            (
+                                from val2 in s2
+                                where !s1.Contains(val2)
+                                select val2
+                            )
+                        select new { val1, val2 };
+
+            foreach (var value in query)
+            {
+                Console.WriteLine(value);
+                result.Add(value.val1);
+                result.Add(value.val2);
+            }
 
             return result;
         }
