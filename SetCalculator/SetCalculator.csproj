@@ -46,7 +46,7 @@
     <Compile Include="Main\App.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Set\Set.cs" />
+    <Compile Include="Sets\Set.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
